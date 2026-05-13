@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donación | Banda Sinfónica de Comas</title>
+  <meta name="description" content="Apoya a la Banda Sinfónica de Comas con tu donación. Ayúdanos a llevar la música a más jóvenes de Lima." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2744; --navy-light: #243259; --gold: #c9922a; --gold-light: #e8b04a;
+      --cream: #faf7f2; --white: #ffffff; --gray: #6b7280; --text: #1a1a2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 70px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 70px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: rgba(43,9,240,0.82); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 22px; border-radius: 4px; }
+    .nav-cta:hover { background: var(--gold-light); color: var(--navy) !important; }
+
+    /* HERO DONACIÓN */
+    .donate-hero {
+      min-height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 120px 5% 60px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 60%, #243259 100%);
+    }
+    .donate-hero::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.04;
+      background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%);
+      background-size: 30px 30px;
+    }
+    .donate-hero-content { position: relative; z-index: 2; max-width: 680px; }
+    .donate-hero h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900;
+      color: #fff; line-height: 1.1; margin-bottom: 16px; animation: fadeUp 0.6s ease both;
+    }
+    .donate-hero h1 span { color: var(--gold); }
+    .donate-hero p { color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.7; animation: fadeUp 0.7s 0.15s ease both; }
+    .heart-icon { font-size: 3rem; margin-bottom: 16px; animation: heartbeat 1.5s infinite; display: inline-block; }
+
+    /* DONATION OPTIONS */
+    .donate-section { padding: 80px 5%; max-width: 1100px; margin: 0 auto; }
+    .donate-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--navy); text-align: center; margin-bottom: 12px; }
+    .donate-section .subtitle { color: var(--gray); text-align: center; margin-bottom: 48px; font-size: 1.05rem; }
+
+    .donate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 60px; }
+    .donate-card {
+      background: #fff; border-radius: 16px; padding: 36px 28px; text-align: center;
+      box-shadow: 0 4px 20px rgba(26,39,68,0.07); border-top: 4px solid transparent;
+      transition: all 0.3s ease; cursor: pointer; position: relative;
+    }
+    .donate-card:hover, .donate-card.selected { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(26,39,68,0.13); border-top-color: var(--gold); }
+    .donate-card.featured { border-top-color: var(--gold); background: linear-gradient(to bottom, rgba(201,146,42,0.04), #fff); }
+    .donate-card.featured::after {
+      content: '★ Popular'; position: absolute; top: 12px; right: 12px;
+      background: var(--gold); color: #fff; font-size: 0.7rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 12px; letter-spacing: 0.05em;
+    }
+    .donate-emoji { font-size: 2.6rem; margin-bottom: 14px; }
+    .donate-amount { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--navy); margin-bottom: 6px; }
+    .donate-amount small { font-size: 0.9rem; font-weight: 400; color: var(--gray); }
+    .donate-card h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 10px; font-weight: 600; }
+    .donate-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
+
+    /* DONATION FORM */
+    .donate-form-section { background: var(--navy); border-radius: 20px; padding: 48px; color: #fff; margin-bottom: 60px; }
+    .donate-form-section h2 { color: #fff; text-align: center; margin-bottom: 8px; font-family: 'Playfair Display', serif; font-size: 1.8rem; }
+    .donate-form-section .subtitle { color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 36px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 600px; margin: 0 auto; }
+    .form-group { margin-bottom: 0; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--gold-light); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 14px 18px; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 10px;
+      font-family: inherit; font-size: 0.95rem; color: #fff; background: rgba(255,255,255,0.08);
+      transition: border-color 0.2s; outline: none;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--navy); color: #fff; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .btn-donate {
+      display: block; width: 100%; max-width: 600px; margin: 28px auto 0; padding: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy);
+      border: none; border-radius: 50px; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.04em; transition: all 0.3s;
+    }
+    .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,146,42,0.4); }
+
+    /* IMPACT SECTION */
+    .impact-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 60px; }
+    .impact-item {
+      text-align: center; background: #fff; border-radius: 14px; padding: 28px 16px;
+      box-shadow: 0 4px 16px rgba(26,39,68,0.06); border-bottom: 3px solid var(--gold);
+    }
+    .impact-item .num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); }
+    .impact-item .label { color: var(--gray); font-size: 0.82rem; margin-top: 4px; }
+
+    /* FAQ */
+    .faq-section { max-width: 700px; margin: 0 auto 60px; }
+    .faq-section h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--navy); text-align: center; margin-bottom: 32px; }
+    .faq-item { background: #fff; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(26,39,68,0.05); }
+    .faq-q { padding: 18px 24px; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+    .faq-q:hover { background: rgba(201,146,42,0.06); }
+    .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--gold); transition: transform 0.3s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; padding: 0 24px; color: var(--gray); font-size: 0.92rem; line-height: 1.7; }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 18px; }
+
+    /* FOOTER */
+    footer { background: var(--navy); border-top: 3px solid var(--gold); padding: 36px 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; }
+    .footer-logo img { height: 36px; filter: brightness(0) invert(1); opacity: 0.8; }
+    .footer-copy { color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .impact-row { grid-template-columns: repeat(2, 1fr); }
+      .donate-form-section { padding: 32px 20px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .impact-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index_2.html"><img src="./logo.png" alt="Banda Sinfónica de Comas" /></a>
+    <ul class="nav-links">
+      <li><a href="index_2.html#nosotros">Nosotros</a></li>
+      <li><a href="index_2.html#programas">Programas</a></li>
+      <li><a href="Eventos.html">Eventos</a></li>
+      <li><a href="galeria.html">Galería</a></li>
+      <li><a href="index_2.html#inscripcion" class="nav-cta">Inscríbete</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="donate-hero">
+    <div class="donate-hero-content">
+      <div class="heart-icon">❤️</div>
+      <h1>Tu donación <span>transforma vidas</span></h1>
+      <p>Cada aporte nos permite llevar la educación musical a más niños y jóvenes de los sectores populares de Lima. Sé parte del cambio.</p>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <div class="donate-section">
+    <div class="impact-row">
+      <div class="impact-item"><div class="num">+500</div><div class="label">Alumnos beneficiados</div></div>
+      <div class="impact-item"><div class="num">10+</div><div class="label">Años de servicio</div></div>
+      <div class="impact-item"><div class="num">15+</div><div class="label">Colegios alcanzados</div></div>
+      <div class="impact-item"><div class="num">50+</div><div class="label">Conciertos realizados</div></div>
+    </div>
+
+    <!-- DONATION OPTIONS -->
+    <h2>Elige cómo apoyar</h2>
+    <p class="subtitle">Cada sol cuenta. Selecciona el monto con el que deseas contribuir.</p>
+    <div class="donate-grid">
+      <div class="donate-card" onclick="selectDonation(this, 20)">
+        <div class="donate-emoji">🎵</div>
+        <div class="donate-amount">S/ 20 <small>/mes</small></div>
+        <h3>Semilla Musical</h3>
+        <p>Cubre materiales de estudio para un alumno durante un mes.</p>
+      </div>
+      <div class="donate-card featured" onclick="selectDonation(this, 50)">
+        <div class="donate-emoji">🎺</div>
+        <div class="donate-amount">S/ 50 <small>/mes</small></div>
+        <h3>Nota de Esperanza</h3>
+        <p>Contribuye al mantenimiento de instrumentos y partituras.</p>
+      </div>
+      <div class="donate-card" onclick="selectDonation(this, 100)">
+        <div class="donate-emoji">🎼</div>
+        <div class="donate-amount">S/ 100 <small>/mes</small></div>
+        <h3>Acorde Solidario</h3>
+        <p>Ayuda a beccar a un estudiante con talento que no puede pagar.</p>
+      </div>
+    </div>
+
+    <!-- DONATION FORM -->
+    <div class="donate-form-section">
+      <h2>Completa tu donación</h2>
+      <p class="subtitle">Tus datos están seguros. Recibirás una confirmación por correo.</p>
+      <div class="form-grid">
+        <div class="form-group"><label for="d-nombre">Nombre</label><input type="text" id="d-nombre" placeholder="Tu nombre" /></div>
+        <div class="form-group"><label for="d-apellido">Apellido</label><input type="text" id="d-apellido" placeholder="Tu apellido" /></div>
+        <div class="form-group full"><label for="d-email">Correo electrónico</label><input type="email" id="d-email" placeholder="correo@ejemplo.com" /></div>
+        <div class="form-group"><label for="d-telefono">Teléfono</label><input type="tel" id="d-telefono" placeholder="+51 9XX XXX XXX" /></div>
+        <div class="form-group">
+          <label for="d-monto">Monto (S/)</label>
+          <input type="number" id="d-monto" placeholder="50" min="1" />
+        </div>
+        <div class="form-group full">
+          <label for="d-metodo">Método de pago</label>
+          <select id="d-metodo">
+            <option value="">Selecciona</option>
+            <option>Yape / Plin</option>
+            <option>Transferencia bancaria</option>
+            <option>Depósito en agente</option>
+          </select>
+        </div>
+        <div class="form-group full"><label for="d-mensaje">Mensaje (opcional)</label><textarea id="d-mensaje" placeholder="¿Quieres dejarnos un mensaje?"></textarea></div>
+      </div>
+      <button class="btn-donate" onclick="handleDonation()">❤️ Realizar donación</button>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo se utiliza mi donación?</div><div class="faq-a">Tu donación se destina a la compra y mantenimiento de instrumentos, materiales educativos, becas para alumnos y la organización de conciertos comunitarios.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Puedo hacer una donación única?</div><div class="faq-a">¡Por supuesto! Aceptamos tanto donaciones mensuales como aportes únicos. Cada contribución es valiosa.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Recibiré un comprobante?</div><div class="faq-a">Sí, te enviaremos un comprobante de donación a tu correo electrónico registrado.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo puedo ser voluntario?</div><div class="faq-a">Escríbenos por WhatsApp al +51 902 488 667 o por correo a bandasinfonicadecomas@gmail.com para conocer nuestras oportunidades de voluntariado.</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo"><img src="./logo.png" alt="BSC" /></div>
+    <p class="footer-copy">© 2025 Banda Sinfónica de Comas · Lima, Perú</p>
+    <div class="footer-links">
+      <a href="index_2.html">Inicio</a>
+      <a href="Eventos.html">Eventos</a>
+      <a href="galeria.html">Galería</a>
+    </div>
+  </footer>
+
+  <script>
+    function selectDonation(card, amount) {
+      document.querySelectorAll('.donate-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      document.getElementById('d-monto').value = amount;
+    }
+    function handleDonation() {
+      const nombre = document.getElementById('d-nombre').value;
+      const email = document.getElementById('d-email').value;
+      const monto = document.getElementById('d-monto').value;
+      if (!nombre || !email || !monto) { alert('Por favor completa nombre, correo y monto.'); return; }
+      alert('¡Gracias, ' + nombre + '! Tu intención de donar S/ ' + monto + ' ha sido registrada. Nos comunicaremos contigo para completar el proceso. ❤️');
+    }
+    function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+  </script>
+</body>
+</html>

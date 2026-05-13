@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galería | Banda Sinfónica de Comas</title>
+  <meta name="description" content="Galería fotográfica de la Banda Sinfónica de Comas. Momentos de conciertos, ensayos y eventos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2744; --navy-light: #243259; --gold: #c9922a; --gold-light: #e8b04a;
+      --cream: #faf7f2; --white: #ffffff; --gray: #6b7280; --text: #1a1a2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 70px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 70px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: rgba(43,9,240,0.82); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 22px; border-radius: 4px; }
+
+    /* HERO */
+    .gallery-hero {
+      min-height: 45vh; display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 120px 5% 60px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%);
+    }
+    .gallery-hero::before { content: ''; position: absolute; inset: 0; opacity: 0.04; background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 30px 30px; }
+    .gallery-hero-content { position: relative; z-index: 2; }
+    .gallery-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; color: #fff; margin-bottom: 12px; animation: fadeUp 0.6s ease both; }
+    .gallery-hero h1 span { color: var(--gold); }
+    .gallery-hero p { color: rgba(255,255,255,0.65); font-size: 1.08rem; max-width: 550px; margin: 0 auto; animation: fadeUp 0.7s 0.15s ease both; }
+
+    /* FILTER TABS */
+    .gallery-section { padding: 60px 5%; max-width: 1200px; margin: 0 auto; }
+    .filter-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .filter-tab {
+      background: #fff; border: 1.5px solid rgba(201,146,42,0.25); color: var(--navy);
+      padding: 10px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s; font-family: inherit;
+    }
+    .filter-tab:hover, .filter-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .filter-tab.active { box-shadow: 0 4px 16px rgba(26,39,68,0.2); }
+
+    /* MASONRY GALLERY */
+    .masonry { columns: 3; column-gap: 16px; }
+    .masonry-item {
+      break-inside: avoid; margin-bottom: 16px; border-radius: 14px; overflow: hidden;
+      position: relative; cursor: pointer; transition: transform 0.3s;
+    }
+    .masonry-item:hover { transform: scale(1.02); }
+    .masonry-item img { width: 100%; display: block; transition: transform 0.5s; }
+    .masonry-item:hover img { transform: scale(1.06); }
+    .masonry-item .overlay {
+      position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,39,68,0.8) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 20px;
+    }
+    .masonry-item:hover .overlay { opacity: 1; }
+    .overlay-text { color: #fff; }
+    .overlay-text h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 4px; }
+    .overlay-text p { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000;
+      display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px); animation: lbFadeIn 0.3s ease;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 85vh; border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 24px; width: 44px; height: 44px;
+      border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(201,146,42,0.5); }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
+      border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-nav:hover { background: rgba(201,146,42,0.5); }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+    .lightbox-caption { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.7); font-size: 0.9rem; text-align: center; }
+
+    footer { background: var(--navy); border-top: 3px solid var(--gold); padding: 36px 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; }
+    .footer-logo img { height: 36px; filter: brightness(0) invert(1); opacity: 0.8; }
+    .footer-copy { color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes lbFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) { .masonry { columns: 2; } }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .masonry { columns: 1; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index_2.html"><img src="./logo.png" alt="Banda Sinfónica de Comas" /></a>
+    <ul class="nav-links">
+      <li><a href="index_2.html">Inicio</a></li>
+      <li><a href="Eventos.html">Eventos</a></li>
+      <li><a href="donacion.html">Donación</a></li>
+      <li><a href="index_2.html#inscripcion" class="nav-cta">Inscríbete</a></li>
+    </ul>
+  </nav>
+
+  <section class="gallery-hero">
+    <div class="gallery-hero-content">
+      <h1>Nuestra <span>Galería</span></h1>
+      <p>Momentos que cuentan historias de esfuerzo, dedicación y amor por la música.</p>
+    </div>
+  </section>
+
+  <div class="gallery-section">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterGallery('all', this)">Todos</button>
+      <button class="filter-tab" onclick="filterGallery('conciertos', this)">Conciertos</button>
+      <button class="filter-tab" onclick="filterGallery('ensayos', this)">Ensayos</button>
+      <button class="filter-tab" onclick="filterGallery('eventos', this)">Eventos</button>
+    </div>
+
+    <div class="masonry" id="galleryMasonry">
+      <div class="masonry-item reveal" data-cat="conciertos" onclick="openLightbox(0)">
+        <img src="./slide1.jpg" alt="Presentación oficial" />
+        <div class="overlay"><div class="overlay-text"><h4>Presentación Oficial</h4><p>Concierto · 2025</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="ensayos" onclick="openLightbox(1)">
+        <img src="./slide2.jpg" alt="Ensayo al aire libre" />
+        <div class="overlay"><div class="overlay-text"><h4>Ensayo al Aire Libre</h4><p>Ensayo · Colegio Festini</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="ensayos" onclick="openLightbox(2)">
+        <img src="./slide3.jpg" alt="Clase de canto" />
+        <div class="overlay"><div class="overlay-text"><h4>Clase de Canto y Guitarra</h4><p>Ensayo · 2025</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="eventos" onclick="openLightbox(3)">
+        <img src="./evento 2.jpg" alt="Evento especial" />
+        <div class="overlay"><div class="overlay-text"><h4>Evento Especial</h4><p>Evento · Aniversario</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="conciertos" onclick="openLightbox(4)">
+        <img src="./evento3.jpg" alt="Concierto de gala" />
+        <div class="overlay"><div class="overlay-text"><h4>Concierto de Gala</h4><p>Concierto · 2025</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="eventos" onclick="openLightbox(5)">
+        <img src="./evento4.jpg" alt="Festival musical" />
+        <div class="overlay"><div class="overlay-text"><h4>Festival Musical</h4><p>Evento · Navidad</p></div></div>
+      </div>
+      <div class="masonry-item reveal" data-cat="eventos" onclick="openLightbox(6)">
+        <img src="./matricula.jpg" alt="Jornada de matrícula" />
+        <div class="overlay"><div class="overlay-text"><h4>Jornada de Matrícula</h4><p>Evento · 2026</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">←</button>
+    <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">→</button>
+    <img id="lightboxImg" src="" alt="Galería" />
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo"><img src="./logo.png" alt="BSC" /></div>
+    <p class="footer-copy">© 2025 Banda Sinfónica de Comas · Lima, Perú</p>
+    <div class="footer-links">
+      <a href="index_2.html">Inicio</a>
+      <a href="Eventos.html">Eventos</a>
+      <a href="donacion.html">Donación</a>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Filter
+    function filterGallery(cat, btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.masonry-item').forEach(item => {
+        if (cat === 'all' || item.dataset.cat === cat) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Lightbox
+    const images = [];
+    const captions = [];
+    document.querySelectorAll('.masonry-item').forEach(item => {
+      images.push(item.querySelector('img').src);
+      const h = item.querySelector('.overlay-text h4');
+      captions.push(h ? h.textContent : '');
+    });
+    let currentImg = 0;
+
+    function openLightbox(idx) {
+      currentImg = idx;
+      document.getElementById('lightboxImg').src = images[idx];
+      document.getElementById('lightboxCaption').textContent = captions[idx];
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function navLightbox(dir) {
+      currentImg = (currentImg + dir + images.length) % images.length;
+      document.getElementById('lightboxImg').src = images[currentImg];
+      document.getElementById('lightboxCaption').textContent = captions[currentImg];
+    }
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+    });
+  </script>
+</body>
+</html>

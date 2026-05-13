@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos | Banda Sinfónica de Comas</title>
+  <meta name="description" content="Próximos eventos y conciertos de la Banda Sinfónica de Comas. Música para todos en Lima, Perú." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1a2744; --navy-light: #243259; --gold: #c9922a; --gold-light: #e8b04a;
+      --cream: #faf7f2; --white: #ffffff; --gray: #6b7280; --text: #1a1a2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 70px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 70px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: rgba(43,9,240,0.82); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta { background: var(--gold); color: #fff !important; padding: 8px 22px; border-radius: 4px; }
+
+    /* HERO */
+    .events-hero {
+      min-height: 45vh; display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 120px 5% 60px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%);
+    }
+    .events-hero::before { content: ''; position: absolute; inset: 0; opacity: 0.04; background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 30px 30px; }
+    .events-hero-content { position: relative; z-index: 2; }
+    .events-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; color: #fff; margin-bottom: 12px; animation: fadeUp 0.6s ease both; }
+    .events-hero h1 span { color: var(--gold); }
+    .events-hero p { color: rgba(255,255,255,0.65); font-size: 1.08rem; max-width: 550px; margin: 0 auto; animation: fadeUp 0.7s 0.15s ease both; }
+
+    /* EVENTS CONTENT */
+    .events-section { padding: 80px 5%; max-width: 1100px; margin: 0 auto; }
+
+    /* FEATURED EVENT */
+    .featured-event {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 20px; overflow: hidden;
+      background: #fff; box-shadow: 0 12px 40px rgba(26,39,68,0.12); margin-bottom: 60px;
+      animation: fadeUp 0.7s ease both;
+    }
+    .featured-event-img { position: relative; min-height: 360px; overflow: hidden; }
+    .featured-event-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+    .featured-event:hover .featured-event-img img { transform: scale(1.04); }
+    .featured-event-img .feat-badge {
+      position: absolute; top: 20px; left: 20px; background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px; z-index: 2;
+    }
+    .featured-event-info { padding: 44px 36px; display: flex; flex-direction: column; justify-content: center; }
+    .featured-event-info .event-tag { display: inline-block; background: rgba(201,146,42,0.12); color: var(--gold); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 12px; margin-bottom: 14px; width: fit-content; }
+    .featured-event-info h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 10px; line-height: 1.15; }
+    .featured-event-info .event-meta { display: flex; flex-direction: column; gap: 8px; margin: 16px 0 24px; }
+    .featured-event-info .event-meta-item { display: flex; align-items: center; gap: 10px; color: var(--gray); font-size: 0.92rem; }
+    .featured-event-info .event-meta-item .icon { font-size: 1.1rem; }
+    .btn-event-link {
+      display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: #fff;
+      text-decoration: none; padding: 13px 28px; border-radius: 50px; font-weight: 600; font-size: 0.92rem;
+      transition: all 0.25s; width: fit-content;
+    }
+    .btn-event-link:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,146,42,0.35); }
+
+    /* EVENTS LIST */
+    .events-list-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--navy); margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+    .events-list-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, rgba(201,146,42,0.3), transparent); }
+
+    .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px; }
+    .event-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(26,39,68,0.07); transition: all 0.3s ease;
+    }
+    .event-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(26,39,68,0.13); }
+    .event-card-img { position: relative; height: 200px; overflow: hidden; }
+    .event-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .event-card:hover .event-card-img img { transform: scale(1.06); }
+    .event-card-date {
+      position: absolute; top: 14px; right: 14px; background: var(--navy); color: #fff;
+      padding: 10px 14px; border-radius: 12px; text-align: center; min-width: 60px;
+    }
+    .event-card-date .day { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .event-card-date .month { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; }
+    .event-card-body { padding: 22px 24px; }
+    .event-card-body .status { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; margin-bottom: 10px; }
+    .status-upcoming { background: rgba(46,204,113,0.12); color: #27ae60; }
+    .status-past { background: rgba(149,165,166,0.15); color: #7f8c8d; }
+    .event-card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--navy); margin-bottom: 8px; line-height: 1.3; }
+    .event-card-body .meta { color: var(--gray); font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px; }
+    .event-card-body .meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* PAST EVENTS */
+    .past-events .event-card { opacity: 0.8; }
+    .past-events .event-card:hover { opacity: 1; }
+
+    footer { background: var(--navy); border-top: 3px solid var(--gold); padding: 36px 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; }
+    .footer-logo img { height: 36px; filter: brightness(0) invert(1); opacity: 0.8; }
+    .footer-copy { color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .featured-event { grid-template-columns: 1fr; }
+      .featured-event-img { min-height: 250px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .events-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index_2.html"><img src="./logo.png" alt="Banda Sinfónica de Comas" /></a>
+    <ul class="nav-links">
+      <li><a href="index_2.html">Inicio</a></li>
+      <li><a href="index_2.html#programas">Programas</a></li>
+      <li><a href="galeria.html">Galería</a></li>
+      <li><a href="donacion.html">Donación</a></li>
+      <li><a href="index_2.html#inscripcion" class="nav-cta">Inscríbete</a></li>
+    </ul>
+  </nav>
+
+  <section class="events-hero">
+    <div class="events-hero-content">
+      <h1>Nuestros <span>Eventos</span></h1>
+      <p>Descubre nuestros próximos conciertos, presentaciones y actividades musicales en Lima.</p>
+    </div>
+  </section>
+
+  <div class="events-section">
+    <!-- FEATURED EVENT -->
+    <div class="featured-event">
+      <div class="featured-event-img">
+        <span class="feat-badge">🔥 Destacado</span>
+        <img src="./slide2.jpg" alt="Gran Concierto Sinfónico" />
+      </div>
+      <div class="featured-event-info">
+        <span class="event-tag">🎵 Próximo evento</span>
+        <h2>Gran Concierto Sinfónico de Comas</h2>
+        <div class="event-meta">
+          <div class="event-meta-item"><span class="icon">📅</span> Sábado 28 de Junio, 2026</div>
+          <div class="event-meta-item"><span class="icon">🕕</span> 6:00 p.m.</div>
+          <div class="event-meta-item"><span class="icon">📍</span> Auditorio Municipal de Comas, Lima</div>
+          <div class="event-meta-item"><span class="icon">🎟️</span> Entrada libre</div>
+        </div>
+        <p style="color:var(--gray);font-size:0.92rem;line-height:1.7;margin-bottom:24px;">
+          Ven a disfrutar de un repertorio de música clásica y popular interpretado por nuestros talentosos alumnos. Una noche de arte, cultura y emoción.
+        </p>
+        <a href="https://wa.me/51902488667?text=Hola,%20quiero%20información%20sobre%20el%20próximo%20concierto" class="btn-event-link" target="_blank">
+          Más información →
+        </a>
+      </div>
+    </div>
+
+    <!-- PRÓXIMOS EVENTOS -->
+    <h3 class="events-list-title">Próximos eventos</h3>
+    <div class="events-grid">
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./slide1.jpg" alt="Ensayo abierto" />
+          <div class="event-card-date"><div class="day">15</div><div class="month">Jul</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-upcoming">Próximo</span>
+          <h3>Ensayo Abierto al Público</h3>
+          <div class="meta">
+            <span>🕐 4:00 p.m.</span>
+            <span>📍 I.E. Festini Ramos Ocampo, Comas</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./slide3.jpg" alt="Taller de instrumentos" />
+          <div class="event-card-date"><div class="day">02</div><div class="month">Ago</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-upcoming">Próximo</span>
+          <h3>Taller: Descubre tu Instrumento</h3>
+          <div class="meta">
+            <span>🕐 10:00 a.m. - 1:00 p.m.</span>
+            <span>📍 Parque Zonal Sinchi Roca</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./evento3.jpg" alt="Concierto de Fiestas Patrias" />
+          <div class="event-card-date"><div class="day">27</div><div class="month">Jul</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-upcoming">Próximo</span>
+          <h3>Concierto de Fiestas Patrias</h3>
+          <div class="meta">
+            <span>🕐 5:00 p.m.</span>
+            <span>📍 Plaza Mayor de Comas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTOS PASADOS -->
+    <h3 class="events-list-title">Eventos pasados</h3>
+    <div class="events-grid past-events">
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./evento 2.jpg" alt="Concierto de aniversario" />
+          <div class="event-card-date"><div class="day">15</div><div class="month">Mar</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-past">Finalizado</span>
+          <h3>Concierto de Aniversario BSC</h3>
+          <div class="meta">
+            <span>📍 Auditorio Municipal de Comas</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./evento4.jpg" alt="Festival de música" />
+          <div class="event-card-date"><div class="day">20</div><div class="month">Dic</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-past">Finalizado</span>
+          <h3>Festival Navideño Musical</h3>
+          <div class="meta">
+            <span>📍 Parque Central de Comas</span>
+          </div>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-card-img">
+          <img src="./matricula.jpg" alt="Jornada de matrícula" />
+          <div class="event-card-date"><div class="day">05</div><div class="month">Feb</div></div>
+        </div>
+        <div class="event-card-body">
+          <span class="status status-past">Finalizado</span>
+          <h3>Jornada de Matrícula 2026</h3>
+          <div class="meta">
+            <span>📍 I.E. Festini Ramos Ocampo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo"><img src="./logo.png" alt="BSC" /></div>
+    <p class="footer-copy">© 2025 Banda Sinfónica de Comas · Lima, Perú</p>
+    <div class="footer-links">
+      <a href="index_2.html">Inicio</a>
+      <a href="donacion.html">Donación</a>
+      <a href="galeria.html">Galería</a>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
